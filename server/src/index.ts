@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Response } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { randomUUID } from 'crypto'
@@ -87,6 +87,47 @@ const app = express()
 app.use(cors())
 
 app.use(express.json({ limit: '256kb' }))
+
+// -----------------------------------------------------------------------------
+// Authentication & Users
+// -----------------------------------------------------------------------------
+import { requireAuth, AuthRequest } from './middleware/auth.js'
+import { db } from './firebase.js'
+
+app.get('/api/auth/me', requireAuth, async (req: AuthRequest, res: Response | any) => {
+  if (!db || !req.user) {
+    return res.status(500).json({ error: 'Database not initialized or user not found' })
+  }
+  
+  const { uid, email, name, picture } = req.user
+  
+  try {
+    const userRef = db.collection('users').doc(uid)
+    const doc = await userRef.get()
+    
+    if (doc.exists) {
+      // Update last login
+      await userRef.update({
+        lastLoginDate: new Date().toISOString()
+      })
+      res.json({ id: uid, ...doc.data() })
+    } else {
+      // Create new user
+      const newUser = {
+        name: name || 'Anonymous User',
+        email: email || '',
+        profilePhoto: picture || '',
+        createdDate: new Date().toISOString(),
+        lastLoginDate: new Date().toISOString()
+      }
+      await userRef.set(newUser)
+      res.json({ id: uid, ...newUser })
+    }
+  } catch (error) {
+    console.error('Error fetching/updating user:', error)
+    res.status(500).json({ error: 'Failed to sync user data' })
+  }
+})
 
 // -----------------------------------------------------------------------------
 // Helpers
@@ -237,7 +278,7 @@ async function callWithTimeoutAndFallback(initialProvider: any, options: any) {
 // Analyze
 // -----------------------------------------------------------------------------
 
-app.post('/api/analyze', async (req, res) => {
+app.post('/api/analyze', requireAuth, async (req: AuthRequest, res: Response | any) => {
   const {
     decision,
     context = '',
@@ -339,7 +380,7 @@ app.post('/api/analyze', async (req, res) => {
 // Compare
 // -----------------------------------------------------------------------------
 
-app.post('/api/compare', async (req, res) => {
+app.post('/api/compare', requireAuth, async (req: AuthRequest, res: Response | any) => {
   const {
     opinionA,
     opinionB,

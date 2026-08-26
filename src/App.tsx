@@ -9,8 +9,10 @@ import { Analyzing } from './pages/Analyzing'
 import { Results } from './pages/Results'
 import { CompareAI } from './pages/CompareAI'
 import { History } from './pages/History'
-
 import { ThinkLab } from './pages/ThinkLab'
+import { SignIn } from './pages/SignIn'
+import { AuthProvider } from './context/AuthContext'
+import { ProtectedRoute } from './components/layout/ProtectedRoute'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -22,22 +24,26 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <div className="flex min-h-screen flex-col relative">
-      <VantaBackground />
-      <ScrollToTop />
-      <Navbar />
-      <main className="flex-1">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/new" element={<NewOpinion />} />
-          <Route path="/analyzing/:id" element={<Analyzing />} />
-          <Route path="/results/:id" element={<Results />} />
-          <Route path="/compare" element={<CompareAI />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/think-lab" element={<ThinkLab />} />
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+    <AuthProvider>
+      <div className="flex min-h-screen flex-col relative">
+        <VantaBackground />
+        <ScrollToTop />
+        <Navbar />
+        <main className="flex-1">
+          <Routes>
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/new" element={<ProtectedRoute><NewOpinion /></ProtectedRoute>} />
+            <Route path="/analyzing/:id" element={<ProtectedRoute><Analyzing /></ProtectedRoute>} />
+            <Route path="/results/:id" element={<ProtectedRoute><Results /></ProtectedRoute>} />
+            <Route path="/compare" element={<ProtectedRoute><CompareAI /></ProtectedRoute>} />
+            <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+            <Route path="/think-lab" element={<ProtectedRoute><ThinkLab /></ProtectedRoute>} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </AuthProvider>
   )
 }
+

@@ -2,11 +2,26 @@ import type { CompareResult, DecisionAnalysis, FocusArea, ProviderId, ProviderIn
 
 export class ApiError extends Error {}
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api'
+export const API_BASE = import.meta.env.VITE_API_URL || '/api'
+
+import { auth } from './firebase'
+
+async function getHeaders() {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+  if (auth.currentUser) {
+    try {
+      const token = await auth.currentUser.getIdToken()
+      headers['Authorization'] = `Bearer ${token}`
+    } catch (e) {
+      console.error('Failed to get auth token', e)
+    }
+  }
+  return headers
+}
 
 export async function listProviders(): Promise<ProviderInfo[]> {
   try {
-    const res = await fetch(`${API_BASE}/providers`)
+    const res = await fetch(`${API_BASE}/providers`, { headers: await getHeaders() })
     if (!res.ok) throw new Error('Failed to fetch providers')
     return res.json()
   } catch (err) {
@@ -26,7 +41,7 @@ export async function requestAnalysis(
 ): Promise<DecisionAnalysis> {
   const res = await fetch(`${API_BASE}/analyze`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: await getHeaders(),
     body: JSON.stringify({ decision, context, focusAreas, provider })
   })
   if (!res.ok) {
@@ -44,7 +59,7 @@ export async function requestAnalysis(
 export async function requestCompare(opinionA: string, opinionB: string, provider: ProviderId): Promise<CompareResult> {
   const res = await fetch(`${API_BASE}/compare`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: await getHeaders(),
     body: JSON.stringify({ opinionA, opinionB, provider })
   })
   if (!res.ok) {

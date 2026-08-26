@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { ThemeToggle } from '../ui/ThemeToggle'
 import { Button } from '../ui/Button'
+import { useAuth } from '../../context/AuthContext'
 
 const links = [
   { to: '/', label: 'Home' },
@@ -15,6 +16,7 @@ const links = [
 export function Navbar() {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
+  const { user, signOut } = useAuth()
 
   return (
     <header className="sticky top-0 z-40 border-b border-pink-200/40 bg-blush-50/80 backdrop-blur-md  ">
@@ -50,9 +52,23 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Button size="sm" className="hidden sm:inline-flex" onClick={() => navigate('/new')}>
-            Ask Elsewise →
-          </Button>
+          {user ? (
+            <>
+              <Button size="sm" className="hidden sm:inline-flex" onClick={() => navigate('/new')}>
+                Ask Elsewise →
+              </Button>
+              <button
+                onClick={signOut}
+                className="hidden sm:inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-medium text-mauve-500 hover:bg-wine-100 hover:text-wine-800 transition-colors"
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <Button size="sm" className="hidden sm:inline-flex" onClick={() => navigate('/signin')}>
+              Sign In
+            </Button>
+          )}
           <button
             type="button"
             aria-label="Toggle menu"
@@ -84,16 +100,40 @@ export function Navbar() {
                 {l.label}
               </NavLink>
             ))}
-            <Button
-              size="sm"
-              className="mt-2"
-              onClick={() => {
-                setOpen(false)
-                navigate('/new')
-              }}
-            >
-              Ask Elsewise →
-            </Button>
+            {user ? (
+              <>
+                <Button
+                  size="sm"
+                  className="mt-2"
+                  onClick={() => {
+                    setOpen(false)
+                    navigate('/new')
+                  }}
+                >
+                  Ask Elsewise →
+                </Button>
+                <button
+                  onClick={() => {
+                    setOpen(false)
+                    signOut()
+                  }}
+                  className="mt-2 rounded-xl px-4 py-2.5 text-left text-[15px] font-medium text-mauve-500 hover:bg-wine-100 hover:text-wine-800 transition-colors"
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <Button
+                size="sm"
+                className="mt-2"
+                onClick={() => {
+                  setOpen(false)
+                  navigate('/signin')
+                }}
+              >
+                Sign In
+              </Button>
+            )}
           </nav>
         </div>
       )}
