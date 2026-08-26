@@ -2,7 +2,7 @@ import type { CompareResult, DecisionAnalysis, FocusArea, ProviderId, ProviderIn
 
 export class ApiError extends Error {}
 
-const API_BASE = '/api'
+const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
 export async function listProviders(): Promise<ProviderInfo[]> {
   try {
