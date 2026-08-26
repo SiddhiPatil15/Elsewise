@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-display: "Playfair Display", "Georgia", ui-serif, serif;
+  --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+
+  /* Rose / Blush palette */
+  --color-blush-50:  #FFF5F7;
+  --color-blush-100: #FFE8ED;
+  --color-blush-200: #FECDD7;
+  --color-blush-300: #FDA4B8;
+
+  /* Mauve / Dusty rose */
+  --color-mauve-50:  #FDF4F7;
+  --color-mauve-100: #FAE8F0;
+  --color-mauve-200: #F3C6D9;
+  --color-mauve-300: #E896BA;
+  --color-mauve-400: #C9698E;
+  --color-mauve-500: #A0476A;
+  --color-mauve-600: #7D3253;
+  --color-mauve-700: #5C2040;
+
+  /* Soft petal pink (accent) */
+  --color-petal-400: #F472B6;
+  --color-petal-500: #EC4899;
+  --color-petal-600: #DB2777;
+
+  /* Lavender accent */
+  --color-lavender-200: #E9D5FF;
+  --color-lavender-400: #C084FC;
+  --color-lavender-500: #A855F7;
+
+  /* Dark mode – deep plum/wine */
+  --color-plum-900:  #1A0F1E;
+  --color-plum-850:  #210F27;
+  --color-plum-800:  #2E1438;
+  --color-plum-700:  #3D1A4A;
+  --color-plum-600:  #5C2874;
+  --color-plum-400:  #9D6AB0;
+  --color-plum-300:  #C49DD4;
+  --color-plum-200:  #E0C9EC;
+  --color-plum-100:  #F3E8FA;
+
+  /* Neutral warm */
+  --color-warm-50:   #FDF8FA;
+  --color-warm-100:  #F9F0F4;
+  --color-warm-200:  #F0DDE6;
+  --color-warm-800:  #000000;
+  --color-warm-900:  #000000;
+
+  /* Black text overrides for better visibility */
+  --color-mauve-500: #333333;
+  --color-mauve-600: #111111;
+  --color-ink-500: #333333;
+  --color-ink-900: #000000;
+
+  /* Animations */
+  --animate-fade-up:    fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in:    fade-in 0.5s ease-out both;
+  --animate-shimmer:    shimmer 2.2s linear infinite;
+  --animate-float:      float 4s ease-in-out infinite;
+  --animate-pulse-soft: pulse-soft 2.5s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% center; }
+    to   { background-position: 200% center; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-8px); }
+  }
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.6; }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--color-warm-800);
+    -webkit-font-smoothing: antialiased;
+    transition: color 0.3s ease;
+  }
+
+  
+
+  ::selection {
+    background-color: var(--color-petal-500);
+    color: white;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-petal-400);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-mauve-200);
+    border-radius: 99px;
+  }
+  
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, var(--color-petal-600) 0%, var(--color-lavender-500) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-rose {
+    background: linear-gradient(135deg, #DB2777 0%, #9333EA 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glass card */
+  .glass-card {
+    background: rgba(255, 245, 247, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(252, 205, 215, 0.5);
+    box-shadow: 0 4px 24px rgba(160, 71, 106, 0.08), 0 1px 4px rgba(160, 71, 106, 0.06);
+  }
+  
+
+  /* Shimmer loading */
+  .shimmer-bg {
+    background: linear-gradient(
+      90deg,
+      var(--color-blush-100) 0%,
+      var(--color-blush-200) 50%,
+      var(--color-blush-100) 100%
+    );
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
+  }
+  
+}
