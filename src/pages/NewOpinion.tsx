@@ -25,7 +25,7 @@ export function NewOpinion() {
 
   function handleDeepSubmit(decision: string, context: string, focusAreas: FocusArea[], provider: ProviderId) {
     const pending: PendingDecision = { 
-      id: crypto.randomUUID(),
+      id: Math.random().toString(36).substring(2, 15) + Date.now().toString(36),
       decision, 
       context, 
       focusAreas, 
@@ -37,7 +37,7 @@ export function NewOpinion() {
 
   function handleQuickSubmit(data: any) {
     const pending: PendingDecision = {
-      id: crypto.randomUUID(),
+      id: Math.random().toString(36).substring(2, 15) + Date.now().toString(36),
       decision: data.goal,
       context: `Options: ${data.options}\nRisk: ${data.risk}\nBenefit: ${data.benefit}`,
       focusAreas: ['Time', 'Risk'],
