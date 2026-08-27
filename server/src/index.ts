@@ -458,7 +458,7 @@ if (fs.existsSync(FRONTEND_DIST)) {
     `Serving built frontend from ${FRONTEND_DIST}`,
   )
 } else {
-  app.get('*', (_req, res) => {
+  app.use((_req, res) => {
     res.status(404).send(`
       <div style="font-family: system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; line-height: 1.5;">
         <h2>Frontend Build Missing</h2>
