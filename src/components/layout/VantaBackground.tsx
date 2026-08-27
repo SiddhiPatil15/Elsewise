@@ -1,12 +1,21 @@
 import { useState, useEffect, useRef } from 'react'
+import { useTheme } from '../../context/ThemeContext'
 
 export function VantaBackground() {
   const [vantaEffect, setVantaEffect] = useState<any>(null)
   const myRef = useRef<HTMLDivElement>(null)
+  const { theme } = useTheme()
 
   useEffect(() => {
-    // Check if the global variables are available
-    if (!vantaEffect && (window as any).VANTA && (window as any).VANTA.CLOUDS) {
+    if (theme === 'dark') {
+      if (vantaEffect) {
+        vantaEffect.destroy()
+        setVantaEffect(null)
+      }
+      return
+    }
+
+    if (!vantaEffect && myRef.current && (window as any).VANTA && (window as any).VANTA.CLOUDS) {
       setVantaEffect(
         (window as any).VANTA.CLOUDS({
           el: myRef.current,
@@ -18,7 +27,9 @@ export function VantaBackground() {
         })
       )
     }
+  }, [theme, vantaEffect])
 
+  useEffect(() => {
     return () => {
       if (vantaEffect) {
         vantaEffect.destroy()
@@ -29,7 +40,7 @@ export function VantaBackground() {
   return (
     <div
       ref={myRef}
-      className="fixed inset-0 -z-10 h-full w-full pointer-events-none"
+      className={`fixed inset-0 -z-10 h-full w-full pointer-events-none transition-opacity duration-300 ${theme === 'dark' ? 'opacity-0 hidden' : 'opacity-100'}`}
     />
   )
 }
