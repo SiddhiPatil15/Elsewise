@@ -457,6 +457,18 @@ if (fs.existsSync(FRONTEND_DIST)) {
   console.log(
     `Serving built frontend from ${FRONTEND_DIST}`,
   )
+} else {
+  app.get('*', (_req, res) => {
+    res.status(404).send(`
+      <div style="font-family: system-ui, sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; line-height: 1.5;">
+        <h2>Frontend Build Missing</h2>
+        <p>The Express server is running, but it cannot find the frontend build directory.</p>
+        <p><strong>Expected path:</strong> <code>${FRONTEND_DIST}</code></p>
+        <p><strong>Fix:</strong> Ensure your deployment platform's build command is set to build the frontend as well (e.g. <code>npm run build</code> in the root directory).</p>
+      </div>
+    `)
+  })
+  console.warn(`WARNING: Frontend dist directory not found at ${FRONTEND_DIST}. Serving diagnostic page.`)
 }
 
 // -----------------------------------------------------------------------------
