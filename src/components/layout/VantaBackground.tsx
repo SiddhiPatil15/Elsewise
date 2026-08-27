@@ -15,17 +15,38 @@ export function VantaBackground() {
       return
     }
 
-    if (!vantaEffect && myRef.current && (window as any).VANTA && (window as any).VANTA.CLOUDS) {
-      setVantaEffect(
-        (window as any).VANTA.CLOUDS({
-          el: myRef.current,
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: false,
-          minHeight: 200.00,
-          minWidth: 200.00
-        })
-      )
+    let checkInterval: any;
+
+    const initVanta = () => {
+      if (!vantaEffect && myRef.current && (window as any).VANTA && (window as any).VANTA.CLOUDS) {
+        setVantaEffect(
+          (window as any).VANTA.CLOUDS({
+            el: myRef.current,
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            skyColor: 0xffffff,
+            cloudColor: 0xe6e6e6,
+            cloudShadowColor: 0xd9d9d9,
+            sunColor: 0xff9919,
+            sunGlareColor: 0xff6633,
+            sunPosition: { x: 0, y: 0, z: 0 }
+          })
+        )
+        if (checkInterval) clearInterval(checkInterval)
+      }
+    }
+
+    if (!(window as any).VANTA) {
+      checkInterval = setInterval(initVanta, 500)
+    } else {
+      initVanta()
+    }
+
+    return () => {
+      if (checkInterval) clearInterval(checkInterval)
     }
   }, [theme, vantaEffect])
 
