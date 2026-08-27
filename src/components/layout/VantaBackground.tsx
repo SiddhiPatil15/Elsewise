@@ -1,20 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { useTheme } from '../../context/ThemeContext'
 
 export function VantaBackground() {
   const [vantaEffect, setVantaEffect] = useState<any>(null)
   const myRef = useRef<HTMLDivElement>(null)
-  const { theme } = useTheme()
 
   useEffect(() => {
-    if (theme === 'dark') {
-      if (vantaEffect) {
-        vantaEffect.destroy()
-        setVantaEffect(null)
-      }
-      return
-    }
-
     let checkInterval: any;
 
     const initVanta = () => {
@@ -26,13 +16,7 @@ export function VantaBackground() {
             touchControls: true,
             gyroControls: false,
             minHeight: 200.00,
-            minWidth: 200.00,
-            skyColor: 0xffffff,
-            cloudColor: 0xe6e6e6,
-            cloudShadowColor: 0xd9d9d9,
-            sunColor: 0xff9919,
-            sunGlareColor: 0xff6633,
-            sunPosition: { x: 0, y: 0, z: 0 }
+            minWidth: 200.00
           })
         )
         if (checkInterval) clearInterval(checkInterval)
@@ -48,7 +32,7 @@ export function VantaBackground() {
     return () => {
       if (checkInterval) clearInterval(checkInterval)
     }
-  }, [theme, vantaEffect])
+  }, [vantaEffect])
 
   useEffect(() => {
     return () => {
@@ -61,9 +45,9 @@ export function VantaBackground() {
   return (
     <div
       ref={myRef}
-      className={`fixed inset-0 z-0 h-full w-full pointer-events-none transition-all duration-300 bg-warm-50 dark:bg-plum-900 ${theme === 'dark' ? '' : 'opacity-100'}`}
+      className="fixed inset-0 z-0 h-full w-full pointer-events-none transition-all duration-300 bg-transparent"
     >
-      {/* Vanta injects its canvas inside this div. In dark mode, the canvas is destroyed, leaving just the dark:bg-plum-900 visible. */}
+      {/* Vanta injects its canvas inside this div. */}
     </div>
   )
 }
