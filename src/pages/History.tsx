@@ -39,7 +39,7 @@ export function History() {
             clearHistory()
             setItems([])
           }}
-          className="mt-8 text-sm text-ink-400 underline decoration-ink-800/20 underline-offset-4 hover:text-ink-600   :text-cream-300"
+          className="mt-8 text-sm text-ink-400 underline decoration-ink-800/20 underline-offset-4 hover:text-ink-600 dark:text-cream-300"
         >
           Clear history
         </button>

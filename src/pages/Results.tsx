@@ -1,7 +1,7 @@
 import { useEffect, useState, useTransition, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { RefreshCw } from 'lucide-react'
+import { RefreshCw, Download } from 'lucide-react'
 import type { DecisionAnalysis, ProviderId } from '../types/analysis'
 import { DEMO_ANALYSIS } from '../lib/mockAI'
 import { getAnalysisById, updateAnalysis } from '../lib/storage'
@@ -94,6 +94,34 @@ export function Results() {
       }
     }, 500)
   }
+
+  const handleDownload = () => {
+    if (!analysis) return;
+    let content = `# Elsewise Analysis: ${analysis.decision}\n\n`;
+    if (analysis.context) content += `**Context:**\n${analysis.context}\n\n`;
+    content += `## The Case For\n`;
+    (analysis.supportingArguments || []).forEach(arg => content += `- ${arg}\n`);
+    content += `\n## Blind Spots\n`;
+    (analysis.blindSpots || []).forEach(bs => content += `- ${bs}\n`);
+    content += `\n## Assumptions\n`;
+    (analysis.assumptions || []).forEach(a => content += `- **${a.text}**: ${a.explanation}\n`);
+    content += `\n## Strongest Counterargument\n${analysis.strongestCounterargument}\n\n`;
+    if (analysis.finalOpinion) {
+      content += `## Final Opinion\n`;
+      content += `- What looks strong: ${analysis.finalOpinion.whatLooksStrong}\n`;
+      content += `- Concerns: ${analysis.finalOpinion.concerns}\n`;
+      content += `- Investigate first: ${analysis.finalOpinion.investigateFirst}\n`;
+    }
+    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `elsewise-analysis-${id || 'download'}.md`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-12 sm:px-8 sm:py-16">
@@ -269,6 +297,9 @@ export function Results() {
 
         <div className="flex flex-col gap-3 border-t border-ink-800/10 pt-8 sm:flex-row ">
           <Button onClick={() => navigate('/new')}>Ask another question</Button>
+          <Button variant="outline" onClick={handleDownload} className="w-full sm:w-auto flex items-center justify-center">
+            <Download size={16} className="mr-2" /> Download
+          </Button>
           <Link to="/history">
             <Button variant="outline" className="w-full sm:w-auto">
               View decision history

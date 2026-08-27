@@ -73,7 +73,7 @@ export function Home() {
         <div className="mt-5 flex justify-center">
           <button
             onClick={() => navigate('/results/demo-internship')}
-            className="text-sm text-mauve-400 underline decoration-petal-400/40 underline-offset-4 transition-colors hover:text-petal-600   :text-petal-300"
+            className="text-sm text-mauve-400 underline decoration-petal-400/40 underline-offset-4 transition-colors hover:text-petal-600 dark:text-petal-300"
           >
             Try an Example — see the full analysis →
           </button>
@@ -118,7 +118,7 @@ export function Home() {
             Bring it something you're uncertain about.
           </h2>
           <p className="mx-auto mb-7 max-w-md text-[15px] text-mauve-500 ">
-            No account needed for your first opinion. Already using ChatGPT or Gemini?{' '}
+            No account needed for your first opinion. Already using another AI tool?{' '}
             <Link to="/compare" className="text-petal-600 underline decoration-petal-400/40 underline-offset-4 ">
               Compare two AI opinions instead
             </Link>

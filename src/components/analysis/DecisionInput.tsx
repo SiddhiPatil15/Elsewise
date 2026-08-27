@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react'
+import { Upload, Loader2 } from 'lucide-react'
+import * as pdfjsLib from 'pdfjs-dist'
+import pdfWorker from 'pdfjs-dist/build/pdf.worker.mjs?url'
 import { Button } from '../ui/Button'
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker
 import { Chip } from '../ui/Chip'
 import { ProviderPicker } from '../ui/ProviderPicker'
 import { useProviders } from '../../lib/useProviders'
@@ -38,6 +43,8 @@ export function DecisionInput({ onSubmit, initialDecision = '', initialContext =
   const [decision, setDecision] = useState(initialDecision)
   const [context, setContext] = useState(initialContext)
   const [focus, setFocus] = useState<FocusArea[]>(initialFocus)
+  const [isUploadingPDF, setIsUploadingPDF] = useState(false)
+  const [pdfError, setPdfError] = useState('')
   const { providers, selected, select, error: providerError } = useProviders()
 
   useEffect(() => {
@@ -54,6 +61,44 @@ export function DecisionInput({ onSubmit, initialDecision = '', initialContext =
     e.preventDefault()
     if (!decision.trim() || !selected) return
     onSubmit(decision.trim(), context.trim(), focus, selected)
+  }
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (file.type !== 'application/pdf') {
+      setPdfError('Only PDF files are supported.')
+      return
+    }
+    
+    if (file.size > 10 * 1024 * 1024) {
+      setPdfError('File is too large (max 10MB).')
+      return
+    }
+
+    setIsUploadingPDF(true)
+    setPdfError('')
+    
+    try {
+      const arrayBuffer = await file.arrayBuffer()
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
+      let fullText = ''
+      
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i)
+        const textContent = await page.getTextContent()
+        const pageText = textContent.items.map((item: any) => item.str).join(' ')
+        fullText += pageText + '\n\n'
+      }
+      
+      setContext(prev => (prev ? prev + '\n\n' : '') + `[Extracted from ${file.name}]\n` + fullText)
+    } catch (err: any) {
+      setPdfError('Failed to extract text from PDF.')
+    } finally {
+      setIsUploadingPDF(false)
+      e.target.value = ''
+    }
   }
 
   return (
@@ -90,9 +135,17 @@ export function DecisionInput({ onSubmit, initialDecision = '', initialContext =
       </div>
 
       <div>
-        <label htmlFor="context" className="mb-2 block text-sm font-semibold text-black ">
-          Context <span className="font-normal text-gray-600 ">— what should I know?</span>
-        </label>
+        <div className="mb-2 flex items-center justify-between">
+          <label htmlFor="context" className="block text-sm font-semibold text-black ">
+            Context <span className="font-normal text-gray-600 ">— what should I know?</span>
+          </label>
+          <label className={`cursor-pointer text-sm font-medium text-petal-600 hover:text-petal-700 transition-colors flex items-center gap-1 ${isUploadingPDF ? 'opacity-70 pointer-events-none' : ''}`}>
+            {isUploadingPDF ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+            {isUploadingPDF ? 'Extracting...' : 'Upload PDF'}
+            <input type="file" accept="application/pdf" className="hidden" onChange={handleFileUpload} disabled={isUploadingPDF} />
+          </label>
+        </div>
+        {pdfError && <p className="mb-2 text-xs text-red-500">{pdfError}</p>}
         <textarea
           id="context"
           value={context}
