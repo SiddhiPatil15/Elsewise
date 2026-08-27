@@ -26,7 +26,7 @@ export function DecisionHistory({ items }: { items: DecisionAnalysis[] }) {
           <button
             type="button"
             onClick={() => navigate(`/results/${item.id}`)}
-            className="flex w-full items-center justify-between gap-4 py-4 text-left transition-colors hover:bg-ink-800/[0.02] :bg-cream-200/[0.03]"
+            className="flex w-full items-center justify-between gap-4 py-4 text-left transition-colors hover:bg-ink-800/[0.02] dark:-cream-200/[0.03]"
           >
             <div className="min-w-0">
               <p className="truncate text-[15px] text-ink-900 ">{item.decision}</p>

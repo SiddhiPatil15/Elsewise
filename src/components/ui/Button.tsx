@@ -17,9 +17,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       primary:
         'bg-gradient-to-r from-petal-600 to-lavender-500 text-white shadow-sm shadow-petal-500/25 hover:shadow-md hover:shadow-petal-500/30 hover:from-petal-500 hover:to-lavender-400',
       outline:
-        'border border-petal-300 text-mauve-600 hover:bg-petal-50 hover:border-petal-400   :bg-plum-800 :border-plum-400',
+        'border border-petal-300 text-mauve-600 hover:bg-petal-50 hover:border-petal-400 dark:-plum-800 dark:-plum-400',
       ghost:
-        'text-mauve-500 hover:bg-petal-100/60  :bg-plum-800/60',
+        'text-mauve-500 hover:bg-petal-100/60 dark:-plum-800/60',
     }
     return (
       <button ref={ref} className={`${base} ${sizes[size]} ${variants[variant]} ${className}`} {...props}>

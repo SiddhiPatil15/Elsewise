@@ -56,7 +56,7 @@ export function CompareAI() {
             onChange={(e) => setA(e.target.value)}
             rows={8}
             placeholder="Paste the first response…"
-            className="w-full resize-none rounded-lg border border-ink-800/15 bg-cream-50 px-4 py-3 text-sm leading-relaxed text-ink-900 placeholder:text-ink-400 focus:border-wine-500    :text-cream-500"
+            className="w-full resize-none rounded-lg border border-ink-800/15 bg-cream-50 px-4 py-3 text-sm leading-relaxed text-ink-900 placeholder:text-ink-400 focus:border-wine-500 dark:-cream-500"
           />
         </div>
         <div>
@@ -66,7 +66,7 @@ export function CompareAI() {
             onChange={(e) => setB(e.target.value)}
             rows={8}
             placeholder="Paste the second response…"
-            className="w-full resize-none rounded-lg border border-ink-800/15 bg-cream-50 px-4 py-3 text-sm leading-relaxed text-ink-900 placeholder:text-ink-400 focus:border-wine-500    :text-cream-500"
+            className="w-full resize-none rounded-lg border border-ink-800/15 bg-cream-50 px-4 py-3 text-sm leading-relaxed text-ink-900 placeholder:text-ink-400 focus:border-wine-500 dark:-cream-500"
           />
         </div>
       </div>

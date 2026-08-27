@@ -55,7 +55,7 @@ export function ProviderPicker({ providers, selected, onSelect, label = 'Choose 
                   ? 'cursor-not-allowed border-pink-100 text-mauve-300/50  '
                   : isSelected
                     ? 'border-petal-500 bg-gradient-to-r from-petal-500/15 to-lavender-500/15 text-petal-600 shadow-sm shadow-petal-200   '
-                    : 'border-pink-200 text-mauve-500 hover:border-petal-400 hover:text-petal-600 hover:bg-petal-50   :border-petal-500 :bg-plum-800'
+                    : 'border-pink-200 text-mauve-500 hover:border-petal-400 hover:text-petal-600 hover:bg-petal-50 dark:-petal-500 dark:-plum-800'
               }`}
             >
               {p.label}

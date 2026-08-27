@@ -19,7 +19,7 @@ export function Navbar() {
   const { user, signOut } = useAuth()
 
   return (
-    <header className="sticky top-0 z-40 border-b border-pink-200/40 bg-blush-50/80 backdrop-blur-md  ">
+    <header className="sticky top-0 z-40 border-b border-pink-200/40 dark:border-plum-800/60 bg-blush-50/80 dark:bg-plum-900/80 backdrop-blur-md transition-colors duration-300">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
         <Link to="/" className="flex items-center gap-2 group">
           {/* )( logo mark */}
@@ -41,7 +41,7 @@ export function Navbar() {
                 `rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
                   isActive
                     ? 'bg-petal-500/10 text-petal-600  '
-                    : 'text-mauve-500 hover:bg-petal-500/8 hover:text-petal-600  :text-plum-100'
+                    : 'text-mauve-500 hover:bg-petal-500/8 hover:text-petal-600 dark:-plum-100'
                 }`
               }
             >
@@ -73,7 +73,7 @@ export function Navbar() {
             type="button"
             aria-label="Toggle menu"
             onClick={() => setOpen((v) => !v)}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-mauve-500 hover:bg-petal-100 md:hidden  :bg-plum-800 transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-mauve-500 hover:bg-petal-100 md:hidden dark:-plum-800 transition-colors"
           >
             {open ? <X size={19} /> : <Menu size={19} />}
           </button>

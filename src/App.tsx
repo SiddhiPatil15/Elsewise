@@ -25,7 +25,7 @@ function ScrollToTop() {
 export default function App() {
   return (
     <AuthProvider>
-      <div className="flex min-h-screen flex-col relative">
+      <div className="flex min-h-screen flex-col relative bg-warm-50 dark:bg-plum-900 text-warm-800 dark:text-plum-100 transition-colors duration-300">
         <VantaBackground />
         <ScrollToTop />
         <Navbar />
