@@ -96,7 +96,6 @@
     color: var(--color-warm-800);
     -webkit-font-smoothing: antialiased;
     transition: color 0.3s ease;
-    @apply bg-warm-50 dark:bg-plum-900;
   }
 
   

@@ -29,7 +29,7 @@ export default function App() {
         <VantaBackground />
         <ScrollToTop />
         <Navbar />
-        <main className="flex-1">
+        <main className="flex-1 relative z-10">
           <Routes>
             <Route path="/signin" element={<SignIn />} />
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
@@ -41,7 +41,9 @@ export default function App() {
             <Route path="/think-lab" element={<ProtectedRoute><ThinkLab /></ProtectedRoute>} />
           </Routes>
         </main>
-        <Footer />
+        <div className="relative z-10">
+          <Footer />
+        </div>
       </div>
     </AuthProvider>
   )

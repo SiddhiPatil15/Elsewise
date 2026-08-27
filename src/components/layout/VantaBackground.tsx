@@ -61,7 +61,9 @@ export function VantaBackground() {
   return (
     <div
       ref={myRef}
-      className={`fixed inset-0 -z-10 h-full w-full pointer-events-none transition-opacity duration-300 ${theme === 'dark' ? 'opacity-0 hidden' : 'opacity-100'}`}
-    />
+      className={`fixed inset-0 z-0 h-full w-full pointer-events-none transition-all duration-300 bg-warm-50 dark:bg-plum-900 ${theme === 'dark' ? '' : 'opacity-100'}`}
+    >
+      {/* Vanta injects its canvas inside this div. In dark mode, the canvas is destroyed, leaving just the dark:bg-plum-900 visible. */}
+    </div>
   )
 }
