@@ -7,7 +7,7 @@ export function AssumptionCard({ assumption, index }: { assumption: Assumption; 
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="overflow-hidden rounded-lg border border-ink-800/12 bg-cream-50  ">
+    <div className="overflow-hidden rounded-lg border border-mauve-200 bg-white/60 backdrop-blur-sm shadow-sm">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
