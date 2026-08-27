@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
-import { ThemeToggle } from '../ui/ThemeToggle'
 import { Button } from '../ui/Button'
 import { useAuth } from '../../context/AuthContext'
 
@@ -51,7 +50,6 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           {user ? (
             <>
               <Button size="sm" className="hidden sm:inline-flex" onClick={() => navigate('/new')}>
