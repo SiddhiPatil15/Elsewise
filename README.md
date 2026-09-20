@@ -1,4 +1,4 @@
-# Second Opinion
+# Second Opinion AI
 
 AI that challenges your thinking instead of simply agreeing with you.
 
